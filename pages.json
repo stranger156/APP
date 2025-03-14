@@ -58,11 +58,18 @@
 		"list": [
 			{
 				"text": "课表",
+				"pagePath" : "pages/classify/classify"
+				
+			},
+			{
+				"text": "推荐",
 				"pagePath": "pages/index/index"
-			}	,{
+			}	
+			,{
 				"text": "管理",
 				"pagePath": "pages/management/management"
-			}	,{
+			}	
+			,{
 				"text": "统计",
 				"pagePath": "pages/analysis/analysis"
 			}
