@@ -1,11 +1,18 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-	{
-		"path" : "pages/classify/classify"
-		
-	},
+
 		{
 			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "	智课魔方"
+			}
+		},{
+			"path": "pages/management/management",
+			"style": {
+				"navigationBarTitleText": "	智课魔方"
+			}
+		},{
+			"path": "pages/analysis/analysis",
 			"style": {
 				"navigationBarTitleText": "	智课魔方"
 			}
@@ -28,8 +35,15 @@
 			{
 				"navigationBarTitleText" : ""
 			}
+		},
+	
+		{
+			"path" : "pages/register/register",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
 		}
-		
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -43,14 +57,19 @@
 		       
 		"list": [
 			{
-				"text": "推荐",
+				"text": "课表",
 				"pagePath": "pages/index/index"
-			},{
+			}	,{
+				"text": "管理",
+				"pagePath": "pages/management/management"
+			}	,{
+				"text": "统计",
+				"pagePath": "pages/analysis/analysis"
+			}
+			
+			,{
 				"text": "我的",
 				"pagePath": "pages/home/home"
-			},{
-				"text": "登录",
-				"pagePath": "pages/login/login"
 			}
 		]
 	},

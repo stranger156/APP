@@ -1,11 +1,14 @@
 <template>
-			<image class="logo" src="/static/bg.png"></image>
+	<view>
+		我的界面
+	</view>
 </template>
 
 <script setup>
-	
+
 </script>
 
-<style>
-	       
+<style scoped>
+
 </style>
+

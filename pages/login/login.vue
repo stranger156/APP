@@ -1,198 +1,210 @@
 <template>
-	
-			<image class="logo" src="/static/login.png"></image>
   <view class="container">
-    <!-- 登录注册切换 -->
-    <view class="tabs">
-      <text 
-        :class="['tab-item', activeTab === 0 ? 'active' : '']"
-        @click="switchTab(0)"
-      >登录</text>
-      <text 
-        :class="['tab-item', activeTab === 1 ? 'active' : '']"
-        @click="switchTab(1)"
-      >注册</text>
+    <!-- 顶部导航栏 -->
+    <view class="header">
+      <view class="close-icon" @click="closePage">×</view>
+      <view class="help-text" @click="showHelp">帮助</view>
     </view>
+    <!-- 标题 -->
+    <view class="title">欢迎登录智课魔方</view>
+<br />
 
-    <!-- 登录表单 -->
-    <view v-if="activeTab === 0" class="form-container">
-      <input 
-        class="input" 
-        type="text" 
-        placeholder="请输入用户名" 
-        v-model="loginForm.username"
-      />
-      <input 
-        class="input" 
-        type="password" 
-        placeholder="请输入密码" 
-        v-model="loginForm.password"
-      />
-      <button class="btn" type="primary" @click="handleLogin">立即登录</button>
-      <text class="tips">忘记密码？</text>
+
+    <!-- 手机号输入框 -->
+    <view class="input-group">
+      <view class="prefix">+86</view>
+      <view class="divider">></view>
+      <input type="number" placeholder="请输入手机号" v-model="phoneNumber" />
     </view>
-
-    <!-- 注册表单 -->
-    <view v-if="activeTab === 1" class="form-container">
-      <input 
-        class="input" 
-        type="text" 
-        placeholder="请输入用户名" 
-        v-model="registerForm.username"
-      />
-      <input 
-        class="input" 
-        type="password" 
-        placeholder="请输入密码" 
-        v-model="registerForm.password"
-      />
-      <input 
-        class="input" 
-        type="password" 
-        placeholder="请确认密码" 
-        v-model="registerForm.confirmPassword"
-      />
-      <input 
-        class="input" 
-        type="number" 
-        placeholder="请输入手机号" 
-        v-model="registerForm.phone"
-      />
-      <button class="btn" type="primary" @click="handleRegister">立即注册</button>
+    <!-- 密码输入框 -->
+    <view class="input-group password-input">
+      <input type="password" :type="passwordVisible? 'text' : 'password'" placeholder="请输入密码" v-model="password" />
+      <view class="eye-icon" @click="togglePasswordVisibility">
+        <image :src="passwordVisible? '/static/eye_open.png' : '/static/eye_close.png'" mode="aspectFit"></image>
+      </view>
+    </view>
+    <!-- 登录按钮 -->
+	<br />
+    <button class="login-button" @click="login">登录</button>
+    <!-- 其他登录方式及问题反馈 -->
+    <view class="other-login">
+      <view class="verification-code" @click="verificationCodeLogin">验证码登录</view>
+      <view class="problem" @click="handleProblem">遇到问题</view>
+    </view>
+    <!-- 第三方登录方式 -->
+    <view class="third-party-login">
+      <view class="third-party-item"  @click="wechatLogin">
+        <image  style="width: 30px;" src="/static/wechat_icon.png" mode="aspectFit"></image>
+      </view>
+      <view class="third-party-item"  @click="qqLogin">
+        <image  style="width: 30px;" src="/static/qq_icon.png" mode="aspectFit"></image>
+      </view>
+    </view>
+    <!-- 协议提示 -->
+    <view class="agreement">
+      登录代表同意智课魔方用户协议、隐私政策，并授权使用您的智课魔方账号信息（如昵称、头像）以便您统一管理
     </view>
   </view>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref } from 'vue';
 
-// 响应式状态
-const activeTab = ref(0)
-const loginForm = reactive({
-  username: '',
-  password: ''
-})
-const registerForm = reactive({
-  username: '',
-  password: '',
-  confirmPassword: '',
-  phone: ''
-})
+// 数据定义
+const phoneNumber = ref('');
+const password = ref('');
+const passwordVisible = ref(false);
 
-// 方法
-const switchTab = (index) => {
-  activeTab.value = index
-}
+// 关闭页面方法
+const closePage = () => {
+  uni.navigateBack();
+};
 
-// 登录逻辑
-const handleLogin = async () => {
-  if (!loginForm.username || !loginForm.password) {
-    uni.showToast({ title: '请填写完整信息', icon: 'none' })
-    return
+// 显示帮助信息方法
+const showHelp = () => {
+  uni.showToast({
+    title: '此处应跳转到帮助页面',
+    icon: 'none'
+  });
+};
+
+// 切换密码可见性方法
+const togglePasswordVisibility = () => {
+  passwordVisible.value =!passwordVisible.value;
+};
+
+// 登录方法
+const login = () => {
+  if (!phoneNumber.value ||!password.value) {
+    uni.showToast({
+      title: '请输入手机号和密码',
+      icon: 'none'
+    });
+    return;
   }
+  uni.showToast({
+    title: '登录成功（模拟）',
+    icon:'success'
+  });
+};
 
-  try {
-    uni.showLoading({ title: '登录中...' })
-    // 模拟 API 调用
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    uni.showToast({ title: '登录成功' })
-    // 实际跳转逻辑
-    // uni.navigateTo({ url: '/pages/index/index' })
-  } catch (error) {
-    uni.showToast({ title: '登录失败', icon: 'error' })
-  } finally {
-    uni.hideLoading()
-  }
-}
+// 验证码登录方法
+const verificationCodeLogin = () => {
+  uni.showToast({
+    title: '跳转到验证码登录页面',
+    icon: 'none'
+  });
+};
 
-// 注册逻辑
-const handleRegister = async () => {
-  const { username, password, confirmPassword, phone } = registerForm
+// 处理遇到问题方法
+const handleProblem = () => {
+  uni.showToast({
+    title: '显示问题反馈相关内容',
+    icon: 'none'
+  });
+};
 
-  if (!username || !password || !confirmPassword || !phone) {
-    uni.showToast({ title: '请填写完整信息', icon: 'none' })
-    return
-  }
+// 微信登录方法
+const wechatLogin = () => {
+  uni.showToast({
+    title: '调用微信登录接口',
+    icon: 'none'
+  });
+};
 
-  if (password !== confirmPassword) {
-    uni.showToast({ title: '两次密码输入不一致', icon: 'none' })
-    return
-  }
-
-  if (!/^1[3-9]\d{9}$/.test(phone)) {
-    uni.showToast({ title: '手机号格式不正确', icon: 'none' })
-    return
-  }
-
-  try {
-    uni.showLoading({ title: '注册中...' })
-    // 模拟 API 调用
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    uni.showToast({ title: '注册成功' })
-    activeTab.value = 0 // 切换到登录
-    Object.assign(registerForm, {
-      username: '',
-      password: '',
-      confirmPassword: '',
-      phone: ''
-    })
-  } catch (error) {
-    uni.showToast({ title: '注册失败', icon: 'error' })
-  } finally {
-    uni.hideLoading()
-  }
-}
+// QQ 登录方法
+const qqLogin = () => {
+  uni.showToast({
+    title: '调用 QQ 登录接口',
+    icon: 'none'
+  });
+};
 </script>
 
 <style scoped>
-/* 样式保持不变，同选项式 API 版本 */
-.logo{
-	width: 100%;
-}
 .container {
-  padding: 40rpx;
+  padding: 20px;
+  background-color: #ffffff;
 }
-
-.tabs {
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.close-icon {
+  font-size: 24px;
+  cursor: pointer;
+}
+.help-text {
+  font-size: 14px;
+  color: #007aff;
+  cursor: pointer;
+}
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 20px 0;
+  text-align: center;
+}
+.input-group {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+.prefix {
+  margin-right: 10px;
+}
+.divider {
+  margin: 0 10px;
+}
+input {
+  flex: 1;
+  border: none;
+  outline: none;
+}
+.password-input {
+  position: relative;
+}
+.eye-icon {
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+  padding: 10px;
+}
+.login-button {
+  background-color: #FFE4B5;
+  color: #333;
+  border-width: 50px;
+  padding: 5px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+.other-login {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0;
+}
+.verification-code,
+.problem {
+  font-size: 14px;
+  color: #007aff;
+  cursor: pointer;
+}
+.third-party-login {
   display: flex;
   justify-content: center;
-  margin-bottom: 60rpx;
+  margin-bottom: 0;
 }
-
-.tab-item {
-  margin: 0 40rpx;
-  font-size: 36rpx;
-  color: #666;
-  padding-bottom: 10rpx;
+.third-party-item {
+  margin: -60px 10px;
 }
-
-.tab-item.active {
-  color: #007AFF;
-  border-bottom: 4rpx solid #007AFF;
-}
-
-.form-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.input {
-  height: 100rpx;
-  border-bottom: 2rpx solid #eee;
-  margin-bottom: 40rpx;
-  padding: 0 20rpx;
-}
-
-.btn {
-  margin-top: 60rpx;
-  height: 100rpx;
-  line-height: 100rpx;
-}
-
-.tips {
-  color: #007AFF;
-  font-size: 28rpx;
+.agreement {
+  font-size: 12px;
   text-align: center;
-  margin-top: 40rpx;
-}
+  color: #666;
+  margin-bottom: 10px;
+  
+  }
 </style>

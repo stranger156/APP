@@ -1,7 +1,6 @@
 <template>
 	<view>
-		帮助界面
-		
+		注册界面
 	</view>
 </template>
 

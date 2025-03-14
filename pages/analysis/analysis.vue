@@ -1,7 +1,6 @@
 <template>
 	<view>
-		帮助界面
-		
+		数据分析统计界面
 	</view>
 </template>
 
@@ -12,4 +11,3 @@
 <style scoped>
 
 </style>
-

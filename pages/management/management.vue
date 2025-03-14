@@ -1,7 +1,6 @@
 <template>
 	<view>
-		帮助界面
-		
+		课表管理界面
 	</view>
 </template>
 
