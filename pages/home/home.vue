@@ -1,4 +1,4 @@
-<template>
+<template>  
 	<view class="userLayout pageBg">
 		<view class="userInfo">
 			<view class="avatar">
@@ -9,71 +9,83 @@
 		
 		<view class="section">
 			<view class="list">
-				<view class="row">
-					<view class="left">
-						<uni-icons type="checkbox-filled" size="30" color="#002FA7"></uni-icons>
-						<view class="text">我的学员</view>
+				<navigator url="/pages/MyStudents/MyStudents" hover-class="none" hover-stay-time="100">
+					<view class="row">
+						<view class="left">
+							<uni-icons type="checkbox-filled" size="30" color="#002FA7"></uni-icons>
+							<view class="text">我的学员</view>
+						</view>
+						<view class="right">
+							<view class="text">33</view>
+							<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
+						</view>
 					</view>
-					<view class="right">
-						<view class="text">33</view>
-						<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
+				</navigator>
+				<navigator url="/pages/UserCenter/UserCenter" hover-class="none" hover-stay-time="100">
+					<view class="row">
+						<view class="left">
+							<uni-icons type="contact-filled" size="30" color="#002FA7"></uni-icons>
+							<view class="text">用户中心</view>
+						</view>
+						<view class="right">
+							<view class="text">33</view>
+							<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
+						</view>
 					</view>
-				</view>
-				<view class="row">
-					<view class="left">
-						<uni-icons type="contact-filled" size="30" color="#002FA7"></uni-icons>
-						<view class="text">用户中心</view>
+				</navigator>
+				<navigator url="/pages/ClassStat/ClassStat" hover-class="none" hover-stay-time="100">
+					<view class="row">
+						<view class="left">
+							<uni-icons type="info-filled" size="30" color="#002FA7"></uni-icons>
+							<view class="text">课程统计</view>
+						</view>
+						<view class="right">
+							<view class="text">33</view>
+							<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
+						</view>
 					</view>
-					<view class="right">
-						<view class="text">33</view>
-						<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
-					</view>
-				</view>
-				<view class="row">
-					<view class="left">
-						<uni-icons type="info-filled" size="30" color="#002FA7"></uni-icons>
-						<view class="text">课程统计</view>
-					</view>
-					<view class="right">
-						<view class="text">33</view>
-						<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
-					</view>
-				</view>
+				</navigator>
 			</view>
 		</view>
 		
 		<view class="section">
 			<view class="list">
-				<view class="row">
-					<view class="left">
-						<uni-icons type="chat-filled" size="30" color="#002FA7"></uni-icons>
-						<view class="text">用户反馈</view>
+				<navigator url="/pages/UserFeedback/UserFeedback"  hover-class="none" hover-stay-time="100">
+					<view class="row">
+						<view class="left">
+							<uni-icons type="chat-filled" size="30" color="#002FA7"></uni-icons>
+							<view class="text">用户反馈</view>
+						</view>
+						<view class="right">
+							<view class="text">33</view>
+							<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
+						</view>
 					</view>
-					<view class="right">
-						<view class="text">33</view>
-						<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
+				</navigator>
+				<navigator url="/pages/AboutUs/AboutUs"  hover-class="none" hover-stay-time="100">
+					<view class="row">
+						<view class="left">
+							<uni-icons type="info-filled" size="30" color="#002FA7"></uni-icons>
+							<view class="text">关于我们</view>
+						</view>
+						<view class="right">
+							<view class="text">33</view>
+							<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
+						</view>
 					</view>
-				</view>
-				<view class="row">
-					<view class="left">
-						<uni-icons type="info-filled" size="30" color="#002FA7"></uni-icons>
-						<view class="text">关于我们</view>
+				</navigator>
+				<navigator url="/pages/Exit/Exit"  hover-class="none" hover-stay-time="100">
+					<view class="row">
+						<view class="left">
+							<uni-icons type="minus-filled" size="30" color="#002FA7"></uni-icons>
+							<view class="text">退出登录</view>
+						</view>
+						<view class="right">
+							<view class="text">33</view>
+							<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
+						</view>
 					</view>
-					<view class="right">
-						<view class="text">33</view>
-						<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
-					</view>
-				</view>
-				<view class="row">
-					<view class="left">
-						<uni-icons type="minus-filled" size="30" color="#002FA7"></uni-icons>
-						<view class="text">退出登录</view>
-					</view>
-					<view class="right">
-						<view class="text">33</view>
-						<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
-					</view>
-				</view>
+				</navigator>
 			</view>
 		</view>
 	</view>
