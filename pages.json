@@ -21,10 +21,6 @@
 			"navigationBarTitleText" : "帮助详情"
 		}
 	},
-	{
-			"path" : "pages/login/login"
-		
-		},
 		{
 			"path": "pages/index/index",
 			"style": {
@@ -49,6 +45,48 @@
 			{
 				"navigationBarTitleText" : ""
 			}
+		},
+		{
+			"path" : "pages/MyStudents/MyStudents",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "pages/ClassStat/ClassStat",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "pages/UserFeedback/UserFeedback",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "pages/UserCenter/UserCenter",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "pages/AboutUs/AboutUs",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "pages/Exit/Exit",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
 		}
 	],
 	"globalStyle": {
@@ -64,11 +102,18 @@
 		"list": [
 			{
 				"text": "课表",
+				"pagePath" : "pages/classify/classify"
+				
+			},
+			{
+				"text": "推荐",
 				"pagePath": "pages/index/index"
-			}	,{
+			}	
+			,{
 				"text": "管理",
 				"pagePath": "pages/management/management"
-			}	,{
+			}	
+			,{
 				"text": "统计",
 				"pagePath": "pages/analysis/analysis"
 			}
