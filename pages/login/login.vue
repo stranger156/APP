@@ -1,14 +1,8 @@
 <template>
   <view class="container">
-    <!-- 顶部导航栏 -->
-    <view class="header">
-      <view class="close-icon" @click="closePage">×</view>
-      <view class="help-text" @click="showHelp">帮助</view>
-    </view>
     <!-- 标题 -->
     <view class="title">欢迎登录智课魔方</view>
 <br />
-
 
     <!-- 手机号输入框 -->
     <view class="input-group">
@@ -28,8 +22,8 @@
     <button class="login-button" @click="login">登录</button>
     <!-- 其他登录方式及问题反馈 -->
     <view class="other-login">
-      <view class="verification-code" @click="verificationCodeLogin">验证码登录</view>
-      <view class="problem" @click="handleProblem">遇到问题</view>
+      <view class="verification-code" @click="gotoRegister">没有账户？去注册</view>
+      <view class="problem" @click="handleProblem">遇到问题？</view>
     </view>
     <!-- 第三方登录方式 -->
     <view class="third-party-login">
@@ -89,19 +83,17 @@ const login = () => {
 };
 
 // 验证码登录方法
-const verificationCodeLogin = () => {
-  uni.showToast({
-    title: '跳转到验证码登录页面',
-    icon: 'none'
-  });
+const gotoRegister = () => {
+  uni.navigateTo({
+        url: '/pages/register/register'
+      });
 };
 
 // 处理遇到问题方法
 const handleProblem = () => {
-  uni.showToast({
-    title: '显示问题反馈相关内容',
-    icon: 'none'
-  });
+ uni.navigateTo({
+       url: '/pages/help/help'
+     });
 };
 
 // 微信登录方法
@@ -174,7 +166,7 @@ input {
   padding: 10px;
 }
 .login-button {
-  background-color: #FFE4B5;
+	background-color: skyblue;
   color: #333;
   border-width: 50px;
   padding: 5px;

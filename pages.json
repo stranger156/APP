@@ -25,10 +25,7 @@
 				"navigationBarTitleText" : "智课魔方"
 			}
 		},
-		{
-			"path" : "pages/login/login"
 		
-		},
 		{
 			"path" : "pages/help/help",
 			"style" : 
