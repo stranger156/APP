@@ -30,8 +30,12 @@
 			<view class="row location">
 				<view class="left">位置</view>
 				<view class="right">
-					<view class="uni-list-cell-db">
-						uDa
+					<view class="region-slecter">
+						<uni-data-picker placeholder="请选择地址" popup-title="请选择城市" collection="opendb-city-china" 
+						field="code as value, name as text" orderby="value asc" :step-searh="true" self-field="code" parent-field="parent_code"
+						 @change="bindRegionChange" @nodeclick="onnodeclick">
+						 <view class="provinceName">选择城市</view>
+						 </uni-data-picker>
 					</view>
 					<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
 				</view>
@@ -45,9 +49,22 @@
 	import {getDate} from"../../common/utils.js";
 	let date = ref(getDate());
 	let endDate = getDate();
+	let region = {
+		"select": "",
+		"province":"",
+		"city":"",
+		"district":"",
+		"provinceName":"",
+	}
 	function bindDateChange(e){
 		console.log(e)
 		date.value = e.detail.value
+	}
+	function bindRegionChange(e){
+		console.log(e)
+	}
+	function onnodeclick(node){
+		
 	}
 </script>
 
