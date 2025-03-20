@@ -1,5 +1,5 @@
 <template>
-	<view class = "userCenter">
+	<view class = "userCenter pageBg">
 		<view class="section">
 			<view class="row avatar">
 				<view class="left">头像</view>
@@ -34,7 +34,7 @@
 						<uni-data-picker placeholder="请选择地址" popup-title="请选择城市" collection="opendb-city-china" 
 						field="code as value, name as text" orderby="value asc" :step-searh="true" self-field="code" parent-field="parent_code"
 						 @change="bindRegionChange" @nodeclick="onnodeclick">
-						 <view class="provinceName">选择城市</view>
+						 <view class="provinceName">{{region}}</view>
 						 </uni-data-picker>
 					</view>
 					<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
@@ -49,19 +49,19 @@
 	import {getDate} from"../../common/utils.js";
 	let date = ref(getDate());
 	let endDate = getDate();
-	let region = {
-		"select": "",
-		"province":"",
-		"city":"",
-		"district":"",
-		"provinceName":"",
-	}
+	let region = ref("请选择城市")
 	function bindDateChange(e){
 		console.log(e)
 		date.value = e.detail.value
 	}
 	function bindRegionChange(e){
 		console.log(e)
+		let str = e.detail.value[0].text
+		for(let i=1;i<e.detail.value.length;i++)
+		{
+			str = str+'-'+e.detail.value[i].text
+		}
+		region.value = str
 	}
 	function onnodeclick(node){
 		

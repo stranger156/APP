@@ -1,17 +1,19 @@
 {
-  "id": "uni-icons",
-  "displayName": "uni-icons 图标",
-  "version": "2.0.10",
-  "description": "图标组件，用于展示移动端常见的图标，可自定义颜色、大小。",
+  "id": "uni-data-picker",
+  "displayName": "uni-data-picker 数据驱动的picker选择器",
+  "version": "2.0.1",
+  "description": "单列、多列级联选择器，常用于省市区城市选择、公司部门选择、多级分类等场景",
   "keywords": [
     "uni-ui",
     "uniui",
-    "icon",
-    "图标"
+    "picker",
+    "级联",
+    "省市区",
+    ""
 ],
   "repository": "https://github.com/dcloudio/uni-ui",
   "engines": {
-    "HBuilderX": "^3.2.14"
+    "HBuilderX": ""
   },
   "directories": {
     "example": "../../temps/example_temps"
@@ -37,7 +39,11 @@
     "type": "component-vue"
   },
   "uni_modules": {
-    "dependencies": ["uni-scss"],
+    "dependencies": [
+      "uni-load-more",
+			"uni-icons",
+			"uni-scss"
+    ],
     "encrypt": [],
     "platforms": {
       "cloud": {
@@ -48,8 +54,7 @@
       "client": {
         "App": {
           "app-vue": "y",
-          "app-nvue": "y",
-          "app-uvue": "y"
+          "app-nvue": "y"
         },
         "H5-mobile": {
           "Safari": "y",
@@ -69,15 +74,12 @@
           "阿里": "y",
           "百度": "y",
           "字节跳动": "y",
-          "QQ": "y",
-					"钉钉": "y",
-					"快手": "y",
-					"飞书": "y",
-					"京东": "y"
+        "QQ": "y",
+        "京东": "u"
         },
         "快应用": {
-          "华为": "y",
-          "联盟": "y"
+          "华为": "u",
+          "联盟": "u"
         },
         "Vue": {
             "vue2": "y",
