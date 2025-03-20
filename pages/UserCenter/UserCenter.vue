@@ -20,7 +20,7 @@
 				<view class="left">生日</view>
 				<view class="right">
 					<view class="uni-list-cell-db">
-						<picker mode="date" :value="date" @change="bindDateChange">
+						<picker mode="date" :value="date" :end="endDate" @change="bindDateChange">
 							<view class="uni-input">{{date}}</view>
 						</picker>
 					</view>
@@ -30,6 +30,9 @@
 			<view class="row location">
 				<view class="left">位置</view>
 				<view class="right">
+					<view class="uni-list-cell-db">
+						uDa
+					</view>
 					<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
 				</view>
 			</view>
@@ -39,9 +42,11 @@
 
 <script setup>
 	import{ref}from"vue";
-	import"../../common/utils.js"
-	let date = ref(getDate())
+	import {getDate} from"../../common/utils.js";
+	let date = ref(getDate());
+	let endDate = getDate();
 	function bindDateChange(e){
+		console.log(e)
 		date.value = e.detail.value
 	}
 </script>
