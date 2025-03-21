@@ -10,12 +10,15 @@
 					<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
 				</view>
 			</view>
-			<view class="row nickname">
-				<view class="left">昵称</view>
-				<view class="right">
-					<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
+			<navigator url="/pages/ChangeNickname/ChangeNickname"  hover-class="none" hover-stay-time="100">
+				<view class="row nickname">
+					<view class="left">昵称</view>
+					<view class="right">
+						<view>金方琢</view>
+						<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
+					</view>
 				</view>
-			</view>
+			</navigator>
 			<view class="row">
 				<view class="left">生日</view>
 				<view class="right">
