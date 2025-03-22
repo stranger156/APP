@@ -2,7 +2,10 @@
 	<view class="ChangeNickname">
 		<view class="section">
 			<view class="input-wrapper">
-			    <input id="nickname-input" class="uni-input" :value="nickname" />
+			    <input id="nickname-input" class="nickname-input" :value="nickname" />
+				<button id="nickname-button" class="nickname-button">
+					<view class="button-text">确认更改</view>
+				</button>
 			</view>
 		</view>
 	</view>
@@ -14,20 +17,33 @@
 </script>
 
 <style lang="scss" scoped>
- .input-wrapper {
-    display: flex;
-    padding: 8px 13px;
-    margin: 5px 0;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    background-color: #ffffff;
+ .input-wrapper{
+	height: 80rpx;
+	background-color: #ffffff;
   }
-
-  .uni-input {
-    height: 28px;
-    font-size: 15px;
-    padding: 0px;
-    flex: 1;
-    background-color: #ffffff;
+  .nickname-input{
+    height: 60rpx;
+	width: 100%;
+    font-size: 30rpx;
+    padding-top: 5px;
+	background-color: #ffffff;
+  }
+  .nickname-button{
+	  margin-top:60rpx;
+	  width: 100%;
+	  height: 100rpx;
+	  border: 1px solid #eee;
+	  background-color: #6495ed;
+	  .button-text{
+		  color: #ffffff;
+	  }
+  }
+  .ChangeNickname{
+	  height: 1000rpx;
+	  width: 100%;
+	  background-color: #f5f5f5;
+  }
+  .section{
+	  height: 200rpx;
   }
 </style>

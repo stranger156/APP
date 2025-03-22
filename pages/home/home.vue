@@ -9,7 +9,7 @@
 		
 		<view class="section">
 			<view class="list">
-				<navigator url="/pages/MyStudents/MyStudents" hover-class="none" hover-stay-time="100">
+				<navigator url="/pages/MyClasses/MyClasses" hover-class="none" hover-stay-time="100">
 					<view class="row">
 						<view class="left">
 							<uni-icons type="checkbox-filled" size="30"></uni-icons>

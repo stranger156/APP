@@ -50,7 +50,7 @@
 			"path" : "pages/MyStudents/MyStudents",
 			"style" : 
 			{
-				"navigationBarTitleText" : ""
+				"navigationBarTitleText" : "班级成员"
 			}
 		},
 		{
@@ -71,7 +71,7 @@
 			"path" : "pages/UserCenter/UserCenter",
 			"style" : 
 			{
-				"navigationBarTitleText" : ""
+				"navigationBarTitleText" : "用户中心"
 			}
 		},
 		{
@@ -92,7 +92,14 @@
 			"path" : "pages/ChangeNickname/ChangeNickname",
 			"style" : 
 			{
-				"navigationBarTitleText" : ""
+				"navigationBarTitleText" : "修改昵称"
+			}
+		},
+		{
+			"path" : "pages/MyClasses/MyClasses",
+			"style" : 
+			{
+				"navigationBarTitleText" : "选择班级"
 			}
 		}
 	],
