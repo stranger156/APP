@@ -96,6 +96,7 @@
 </script>
 
 <style lang="scss" scoped>
+	@import "../../common/base-style.scss";
 .userLayout{
 	.userInfo{
 		display: flex;
