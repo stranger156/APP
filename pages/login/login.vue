@@ -8,18 +8,18 @@
     <view class="input-group">
       <view class="prefix">+86</view>
       <view class="divider">></view>
-      <input type="number" placeholder="请输入手机号" v-model="phoneNumber" />
+      <input type="number" placeholder="请输入手机号" v-model="form.phoneNumber" />
     </view>
     <!-- 密码输入框 -->
     <view class="input-group password-input">
-      <input type="password" :type="passwordVisible? 'text' : 'password'" placeholder="请输入密码" v-model="password" />
+      <input type="password" :type="passwordVisible? 'text' : 'password'" placeholder="请输入密码" v-model="form.password" />
       <view class="eye-icon" @click="togglePasswordVisibility">
         <image :src="passwordVisible? '/static/eye_open.png' : '/static/eye_close.png'" mode="aspectFit"></image>
       </view>
     </view>
     <!-- 登录按钮 -->
 	<br />
-    <button class="login-button" @click="login">登录</button>
+    <button class="login-button" @click="userLogin">登录</button>
     <!-- 其他登录方式及问题反馈 -->
     <view class="other-login">
       <view class="verification-code" @click="gotoRegister">没有账户？去注册</view>
@@ -42,11 +42,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
+import { login } from '../../utils/api.js';
+import { saveTokenToLocalStorage } from '../../store/user.js';
 
 // 数据定义
-const phoneNumber = ref('');
-const password = ref('');
+const form=reactive({
+	phoneNumber:'',
+	password:''
+})
+
 const passwordVisible = ref(false);
 
 // 关闭页面方法
@@ -68,21 +73,33 @@ const togglePasswordVisibility = () => {
 };
 
 // 登录方法
-const login = () => {
-  if (!phoneNumber.value ||!password.value) {
+const userLogin = () => {
+  if (!form.phoneNumber ||!form.password) {
     uni.showToast({
       title: '请输入手机号和密码',
       icon: 'none'
     });
     return;
   }
-  uni.showToast({
-    title: '登录成功（模拟）',
-    icon:'success'
-  });
+  console.log(form)
+  login(form).then(res=>{
+			if(res.code===200){
+				uni.showToast({
+				  title: '登录成功（模拟）',
+				  icon:'success'
+				});
+				setTimeout(()=>{	uni.switchTab({
+			    url: '/pages/index/index' // 假设这是一个 tabBar 页面
+			})},600)
+
+				saveTokenToLocalStorage(res.token)
+	
+			}
+		})
+ 
 };
 
-// 验证码登录方法
+// 跳转注册界面
 const gotoRegister = () => {
   uni.navigateTo({
         url: '/pages/register/register'
