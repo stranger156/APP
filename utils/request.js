@@ -13,9 +13,17 @@ const request = (options) => {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             success: (res) => {
-                if (res.statusCode === 200) {
+                if (res.statusCode === 200||res.statusCode === 201) {
                     resolve(res.data);
-                } else {
+                } else { 
+					if (res.statusCode === 409) {
+                        // 从响应数据中获取错误信息
+                        const errorMessage = res.data.message;
+                        uni.showToast({
+                            title: errorMessage,
+                            icon: 'none'
+                        });
+                    }
                     reject(new Error(`请求失败，状态码: ${res.statusCode}`));
                 }
             },

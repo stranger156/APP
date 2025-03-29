@@ -8,39 +8,39 @@
     <view class="input-group">
       <view class="prefix">+86</view>
       <view class="divider">></view>
-      <input type="number" placeholder="请输入手机号" v-model="phoneNumber" />
+      <input type="number" placeholder="请输入手机号" v-model="form.phoneNumber" />
     </view>
     <!-- 密码输入框 -->
     <view class="input-group password-input">
-      <input type="password" :type="passwordVisible? 'text' : 'password'" placeholder="请输入密码" v-model="password" />
-      <view class="eye-icon" @click="togglePasswordVisibility">
+      <input type="password"  placeholder="请输入密码" v-model="form.password" />
+     <!-- <view class="eye-icon" @click="togglePasswordVisibility">
         <image :src="passwordVisible? '/static/eye_open.png' : '/static/eye_close.png'" mode="aspectFit"></image>
-      </view>
+      </view> -->
     </view>
 	<!-- 确认密码输入框 -->
 	<view class="input-group password-input">
-	  <input type="password" :type="passwordVisible? 'text' : 'password'" placeholder="请确认密码" v-model="newPassword" />
+	  <input :type="passwordVisible? 'text' : 'password'" placeholder="请确认密码" v-model="newPassword" />
 	  <view class="eye-icon" @click="togglePasswordVisibility">
-	    <image :src="passwordVisible? '/static/eye_open.png' : '/static/eye_close.png'" mode="aspectFit"></image>
+	    <image :src="passwordVisible? '/static/eye.png' : '/static/eye-close.png'" mode="aspectFit"></image>
 	  </view>
 	</view>
     <!-- 登录按钮 -->
 	<br />
-    <button class="login-button" @click="register">注册</button>
+    <button class="login-button" @click="userRegister">注册</button>
     <!-- 其他登录方式及问题反馈 -->
     <view class="other-login">
       <view class="verification-code" @click="gotoLogin">已有帐户？去登录</view>
       <view class="problem" @click="handleProblem">遇到问题？</view>
     </view>
     <!-- 第三方登录方式 -->
-    <view class="third-party-login">
+<!--    <view class="third-party-login">
       <view class="third-party-item"  @click="wechatLogin">
         <image  style="width: 30px;" src="/static/wechat_icon.png" mode="aspectFit"></image>
       </view>
       <view class="third-party-item"  @click="qqLogin">
         <image  style="width: 30px;" src="/static/qq_icon.png" mode="aspectFit"></image>
       </view>
-    </view>
+    </view> -->
     <!-- 协议提示 -->
     <view class="agreement">
       登录代表同意智课魔方用户协议、隐私政策，并授权使用您的智课魔方账号信息（如昵称、头像）以便您统一管理
@@ -49,11 +49,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { register } from '../../utils/api.js';
+import { reactive, ref } from 'vue';
 
 // 数据定义
-const phoneNumber = ref('');
-const password = ref('');
+const form=reactive({
+	phoneNumber:'',
+	password:''
+})
+
 const newPassword=ref('')
 const passwordVisible = ref(false);
 
@@ -63,31 +67,45 @@ const closePage = () => {
 };
 
 // 显示帮助信息方法
-const showHelp = () => {
-  uni.showToast({
-    title: '此处应跳转到帮助页面',
-    icon: 'none'
-  });
-};
+// const showHelp = () => {
+//   uni.showToast({
+//     title: '此处应跳转到帮助页面',
+//     icon: 'none'
+//   });
+// };
 
 // 切换密码可见性方法
 const togglePasswordVisibility = () => {
   passwordVisible.value =!passwordVisible.value;
 };
 
-// 登录方法
-const register = () => {
-  if (!phoneNumber.value ||!password.value) {
+// 注册方法
+const userRegister = () => {
+  if (!form.phoneNumber ||!form.password) {
     uni.showToast({
       title: '请输入手机号和密码',
       icon: 'none'
     });
     return;
   }
-  uni.showToast({
-    title: '登录成功（模拟）',
-    icon:'success'
-  });
+  if(form.password!==newPassword.value){
+	  uni.showToast({
+	    title: '两次密码输入不一致',
+	    icon: 'none'
+	  });
+	  return;
+  }
+  register(form).then(res=>{
+		  uni.showToast({
+		    title: '注册成功',
+		    icon:'success'
+		  });
+		  uni.navigateTo({
+		        url: '/pages/login/login'
+		      });
+  })
+  
+
 };
 
 // 验证码登录方法
@@ -104,21 +122,21 @@ const handleProblem = () => {
      });
 };
 
-// 微信登录方法
-const wechatLogin = () => {
-  uni.showToast({
-    title: '调用微信登录接口',
-    icon: 'none'
-  });
-};
+// // 微信登录方法
+// const wechatLogin = () => {
+//   uni.showToast({
+//     title: '调用微信登录接口',
+//     icon: 'none'
+//   });
+// };
 
-// QQ 登录方法
-const qqLogin = () => {
-  uni.showToast({
-    title: '调用 QQ 登录接口',
-    icon: 'none'
-  });
-};
+// // QQ 登录方法
+// const qqLogin = () => {
+//   uni.showToast({
+//     title: '调用 QQ 登录接口',
+//     icon: 'none'
+//   });
+// };
 </script>
 
 <style scoped>
@@ -173,6 +191,11 @@ input {
   cursor: pointer;
   padding: 10px;
 }
+.eye-icon image{
+	display: block;
+	width: 20px;
+	height: 20px;
+}
 .login-button {
   background-color: skyblue;
   color: #333;
@@ -204,7 +227,7 @@ input {
   font-size: 12px;
   text-align: center;
   color: #666;
-  margin-bottom: 10px;
+  margin-top: 10vh;
   
   }
 </style>

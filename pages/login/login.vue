@@ -12,9 +12,9 @@
     </view>
     <!-- 密码输入框 -->
     <view class="input-group password-input">
-      <input type="password" :type="passwordVisible? 'text' : 'password'" placeholder="请输入密码" v-model="form.password" />
+      <input :type="passwordVisible? 'text' : 'password'" placeholder="请输入密码" v-model="form.password" />
       <view class="eye-icon" @click="togglePasswordVisibility">
-        <image :src="passwordVisible? '/static/eye_open.png' : '/static/eye_close.png'" mode="aspectFit"></image>
+        <image :src="passwordVisible? '/static/eye.png' : '/static/eye-close.png'" mode="aspectFit"></image>
       </view>
     </view>
     <!-- 登录按钮 -->
@@ -26,14 +26,14 @@
       <view class="problem" @click="handleProblem">遇到问题？</view>
     </view>
     <!-- 第三方登录方式 -->
-    <view class="third-party-login">
+<!--    <view class="third-party-login">
       <view class="third-party-item"  @click="wechatLogin">
         <image  style="width: 30px;" src="/static/wechat_icon.png" mode="aspectFit"></image>
       </view>
       <view class="third-party-item"  @click="qqLogin">
         <image  style="width: 30px;" src="/static/qq_icon.png" mode="aspectFit"></image>
       </view>
-    </view>
+    </view> -->
     <!-- 协议提示 -->
     <view class="agreement">
       登录代表同意智课魔方用户协议、隐私政策，并授权使用您的智课魔方账号信息（如昵称、头像）以便您统一管理
@@ -81,11 +81,10 @@ const userLogin = () => {
     });
     return;
   }
-  console.log(form)
   login(form).then(res=>{
 			if(res.code===200){
 				uni.showToast({
-				  title: '登录成功（模拟）',
+				  title: '登录成功',
 				  icon:'success'
 				});
 				setTimeout(()=>{	uni.switchTab({
@@ -114,20 +113,20 @@ const handleProblem = () => {
 };
 
 // 微信登录方法
-const wechatLogin = () => {
-  uni.showToast({
-    title: '调用微信登录接口',
-    icon: 'none'
-  });
-};
+// const wechatLogin = () => {
+//   uni.showToast({
+//     title: '调用微信登录接口',
+//     icon: 'none'
+//   });
+// };
 
 // QQ 登录方法
-const qqLogin = () => {
-  uni.showToast({
-    title: '调用 QQ 登录接口',
-    icon: 'none'
-  });
-};
+// const qqLogin = () => {
+//   uni.showToast({
+//     title: '调用 QQ 登录接口',
+//     icon: 'none'
+//   });
+// };
 </script>
 
 <style scoped>
@@ -182,6 +181,11 @@ input {
   cursor: pointer;
   padding: 10px;
 }
+.eye-icon image{
+ width: 20px;
+    height: 20px;
+    display: block;
+}
 .login-button {
 	background-color: skyblue;
   color: #333;
@@ -213,7 +217,7 @@ input {
   font-size: 12px;
   text-align: center;
   color: #666;
-  margin-bottom: 10px;
+ margin-top: 10vh;
   
   }
 </style>
