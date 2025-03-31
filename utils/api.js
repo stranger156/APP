@@ -84,28 +84,67 @@ export const getClassesByFaculty = async (params) => {
 	}
 };
 //获取用户信息
-export const getUserInfo= () => {
-	const token = getTokenFromLocalStorage();
-    return request({
-        url: "/getUserInfo",
-        method: 'GET',
-		headers:{  'Content-Type': 'application/x-www-form-urlencoded',
-		             'Authorization': `Bearer ${token}`
-		            }
-    });
+export const getUserInfo = async () => {
+	try {
+	    // 使用 await 等待 getTokenFromLocalStorage 获取 token
+	    const token = await getTokenFromLocalStorage();  
+	
+	    if (!token) {
+	        uni.showToast({
+	            title: '请先登录',
+	            icon: 'none'
+	        });
+	        return Promise.reject(new Error('Token 不存在'));
+	    }
+	
+	    // 使用获取的 token 发送请求
+	    return request({
+	        url: "/getUserInfo",
+	        method: 'GET',
+	    	headers:{  'Content-Type': 'application/x-www-form-urlencoded',
+	    	              'Authorization': `Bearer ${token}`
+	    	            }
+	    });
+	} catch (err) {
+	    console.error('获取 Token 失败:', err);
+	    uni.showToast({
+	        title: '获取 Token 失败',
+	        icon: 'none'
+	    });
+	    return Promise.reject(err);
+	}
 };
 //修改密码
-export const revisePassword= (params) => {
-	const token = getTokenFromLocalStorage();
-    return request({
-        url: "/revisePassword",
-        method: 'POST',
-		headers:{ 
-			'Content-Type': 'application/x-www-form-urlencoded',
-		           'Authorization': `Bearer ${token}`
-		            },
-		  data:params
-    });
+export const revisePassword= async (params) => {
+	try {
+	    // 使用 await 等待 getTokenFromLocalStorage 获取 token
+	    const token = await getTokenFromLocalStorage();  
+	
+	    if (!token) {
+	        uni.showToast({
+	            title: '请先登录',
+	            icon: 'none'
+	        });
+	        return Promise.reject(new Error('Token 不存在'));
+	    }
+	
+	    // 使用获取的 token 发送请求
+	    return request({
+	        url: "/revisePassword",
+	        method: 'POST',
+	    	headers:{  'Content-Type': 'application/x-www-form-urlencoded',
+	    	              'Authorization': `Bearer ${token}`
+	    	            },
+			data:params
+	    });
+	} catch (err) {
+	    console.error('获取 Token 失败:', err);
+	    uni.showToast({
+	        title: '获取 Token 失败',
+	        icon: 'none'
+	    });
+	    return Promise.reject(err);
+	}
 };
 
 // export  getUser =()=>

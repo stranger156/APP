@@ -1,58 +1,49 @@
 <template>
-	<view class = "userCenter pageBg">
-		<view class="section">
-			<view class="row avatar">
-				<view class="left">头像</view>
-				<view class="right">
-					<view class="img">
-						<image src="/static/wechat_icon.png" mode="aspectFit"></image>
-					</view>
-					<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
-				</view>
-			</view>
-			<navigator url="/pages/ChangeNickname/ChangeNickname"  hover-class="none" hover-stay-time="100">
-				<view class="row nickname">
-					<view class="left">昵称</view>
-					<view class="right">
-						<view>金方琢</view>
-						<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
-					</view>
-				</view>
-			</navigator>
-			<view class="row">
-				<view class="left">生日</view>
-				<view class="right">
-					<view class="uni-list-cell-db">
-						<picker mode="date" :value="date" :end="endDate" @change="bindDateChange">
-							<view class="uni-input">{{date}}</view>
-						</picker>
-					</view>
-					<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
-				</view>
-			</view>
-			<view class="row location">
-				<view class="left">位置</view>
-				<view class="right">
-					<view class="region-slecter">
-						<uni-data-picker placeholder="请选择地址" popup-title="请选择城市" collection="opendb-city-china" 
-						field="code as value, name as text" orderby="value asc" :step-searh="true" self-field="code" parent-field="parent_code"
-						 @change="bindRegionChange" @nodeclick="onnodeclick">
-						 <view class="provinceName">{{region}}</view>
-						 </uni-data-picker>
-					</view>
-					<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
-				</view>
-			</view>
-		</view>
-	</view>
+    <view class="userCenter pageBg">
+        <view v-if="loading">加载中...</view>
+        <view v-else-if="!hadInfo">
+            <text>暂无数据</text>
+            <button @click="fetchUserInfo">重新加载</button>
+        </view>
+        <view v-else>
+            <view class="section">
+            	<view class="row">
+            		<view class="left">校园</view>
+            		<view class="right">
+            			<view>{{campus}}</view>
+            		</view>
+            	</view>
+            	<view class="row">
+            		<view class="left">手机号</view>
+            		<view class="right">
+            			{{phone}}
+            		</view>
+            	</view>
+            	<navigator url="/pages/ChangeNickname/ChangeNickname"  hover-class="none" hover-stay-time="100">
+            		<view class="row campus">
+            			<view class="left">修改密码</view>
+            			<view class="right">
+            				<uni-icons type="forward" size="26" color="#aaa"></uni-icons>
+            			</view>
+            		</view>
+            	</navigator>
+            </view>
+        </view>
+    </view>
 </template>
 
 <script setup>
-	import{ref}from"vue";
+	import{ref, onMounted }from"vue";
 	import {getDate} from"../../common/utils.js";
+	import { getUserInfo } from "../../utils/api.js";
 	let date = ref(getDate());
 	let endDate = getDate();
-	let region = ref("请选择城市")
+	let region = ref("请选择城市");
+	let campus = ref("");
+	let phone = ref("");
+	let password = ref("");
+	let hadInfo = ref(false);
+	let loading = ref(true);
 	function bindDateChange(e){
 		console.log(e)
 		date.value = e.detail.value
@@ -69,6 +60,34 @@
 	function onnodeclick(node){
 		
 	}
+	const fetchUserInfo = () => {
+		getUserInfo().then(res => {
+        if (res.code === 200) {
+			console.log(res);
+			hadInfo.value = true;
+            campus.value = res.campusName;
+			phone.value = res.phoneNumber;
+			password.value = res.password;
+            loading.value = false; // 停止加载动画
+        } else {
+            uni.showToast({
+                title: '获取数据失败',
+                icon: 'none'
+            });
+            loading.value = false; // 停止加载动画
+        }
+    }).catch(err => {
+        console.error("请求失败:", err);
+        uni.showToast({
+            title: '请求失败，请稍后重试',
+            icon: 'none'
+        });
+        loading.value = false; // 停止加载动画
+    });
+	}
+	onMounted(() => {
+	    fetchUserInfo();
+	});
 </script>
 
 <style lang="scss" scoped>
