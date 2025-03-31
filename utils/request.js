@@ -8,11 +8,12 @@ const request = (options) => {
             url: baseUrl + options.url,
             method: options.method || 'GET',
             data: options.data || {},
-            header: options.header||
+            header: options.headers||
 			{
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             success: (res) => {
+				console.log(res);
                 if (res.statusCode === 200||res.statusCode === 201) {
                     resolve(res.data);
                 } else { 
