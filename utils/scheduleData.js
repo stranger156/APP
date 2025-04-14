@@ -1,42 +1,45 @@
-export const scheduleData = {
-  currentDate: new Date().getFullYear()+'/'+(new Date().getMonth()+1)+'/'+new Date().getDate(),
-  currentWeek: "第8周 周日",
-  month: "4月",
-  weekDays: ["一", "二", "三", "四", "五", "六", "日"],
-  
-  scheduleItems: [
-    {
-      type: "time",
-      time: "1:00",
-      course: "08:45",
-      index: "2",
-      endTime: "08:55",
-      duration: "09:40"
-    },
-    {
-      type: "time",
-      time: "3:10",
-      course: "10:55",
-      index: "4",
-      endTime: "11:05",
-      duration: "15:50"
-    },
-    {
-      type: "course",
-      name: "软件质量与测试",
-      location: "东十二楼 111",
-      teacher: "武剑洁"
-    },
-    // 其他课程数据...
-  ]
-}
+export const weeklySchedule = {
+  week1: {
+    weekNumber: "第1周",
+    startDate: "2025/4/7",
+    endDate: "2025/4/13",
+    scheduleItems: [
+      {
+        id: 1,
+        type: "lecture",
+        name: "高等数学",
+        location: "东101",
+        teacher: "张教授",
+        day: "周一",
+        startTime: "08:00",
+        endTime: "09:40"
+      },
+      {
+        id: 2,
+        type: "lecture",
+        name: "大学英语",
+        location: "西201",
+        teacher: "王老师",
+        day: "周一", // 同一天第二节课
+        startTime: "10:00",
+        endTime: "11:40"
+      },
+      // 更多课程...
+    ]
+  }
+  // 其他周数据...
+};
 
-// 获取当前周课程数据
-export const getCurrentWeekSchedule = () => {
-  return scheduleData.scheduleItems.filter(item => item.type !== 'notThisWeek');
-}
+// 获取指定周的课程数据
+export const getScheduleByWeek = (weekKey) => {
+  return weeklySchedule[weekKey] || weeklySchedule.week1;
+};
 
-// 获取所有课程数据
-export const getAllSchedule = () => {
-  return scheduleData;
-}
+// 获取所有周次列表
+export const getWeekList = () => {
+  return Object.keys(weeklySchedule).map(key => ({
+    key,
+    label: weeklySchedule[key].weekNumber,
+    dateRange: `${weeklySchedule[key].startDate} ~ ${weeklySchedule[key].endDate}`
+  }));
+};

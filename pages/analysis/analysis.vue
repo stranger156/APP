@@ -1,13 +1,19 @@
 <template>
   <view class="container">
 	<simple-dropdown
-      v-model="selectedCourse"
+      v-model="math"
       :options="courseOptions"
       placeholder="选择课程"
       @change="handleCourseChange"
     />
+	<simple-dropdown
+	  v-model="selectedCourse"
+	  :options="courseOptions"
+	  placeholder="选择课程"
+	  @change="handleCourseChange"
+	/>
     
-    <view class="result">已选择: {{ selectedCourse }}</view>
+    <view class="result">已选择: {{ selectedCourse}}</view>
   </view>
 </template>
 
@@ -16,6 +22,7 @@ import { ref } from 'vue';
 import SimpleDropdown from '@/components/SimpleDropdown.vue';
 
 const selectedCourse = ref('');
+const math=ref('')
 const courseOptions = ref([
   { value: 'math', label: '数学' },
   { value: 'english', label: '英语' },

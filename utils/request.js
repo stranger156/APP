@@ -13,7 +13,6 @@ const request = (options) => {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             success: (res) => {
-				console.log(res);
                 if (res.statusCode === 200||res.statusCode === 201) {
                     resolve(res.data);
                 } else { 

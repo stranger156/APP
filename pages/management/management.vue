@@ -1,7 +1,17 @@
 <template>
-	<view class="">
-	<select id="demo-select1"></select>
-	</view>
+ <view class="container">
+    <uni-data-picker 
+	 v-model="selectedValue"
+      :localdata="options"
+      placeholder="请选择课表呈现条件"
+      popup-title="请选择"
+      @change="onChange"
+	   class="single-line-picker"
+    ></uni-data-picker>
+  </view>
+   <view class="debug-info" v-if="isShow">
+        下面展示 {{ selectedValue }}的课表
+      </view>
 	
   <view class="course-schedule-container">
     <!-- 响应式表格容器 -->
@@ -48,8 +58,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-const array=ref([1,2,3])
+import { onMounted, ref } from 'vue';
+import { getTeachersByCollege ,getBuildingsAndClassrooms, getDepartmentsAndClasses} from '../../utils/api';
+
 // 周几显示
 const weekDays = ref(['周一', '周二', '周三', '周四', '周五', '周六', '周日']);
 
@@ -108,10 +119,101 @@ const courseData = ref([
     null
   ]
 ]);
+
+const selectedValue = ref([]);
+const isShow=ref(false)
+const options = ref([
+  {
+    value: '授课教师',
+    text: '授课教师',
+    children: [],
+  },
+  {
+    value: '授课地点',
+    text: '授课地点',
+    children: [],
+  },
+  {
+    value: '教学班级',
+    text: '教学班级',
+    children: [],
+  },
+]);
+
+const onChange = (e) => {
+  console.log('选择变化:', e.detail.value[0]);
+  console.log(selectedValue.value)
+  if(selectedValue.value.length===0){
+	  isShow.value=false
+  }else{
+	  isShow.value=true
+  }
+};
+onMounted:{
+	//获取学院老师数据
+	getTeachersByCollege().then(res=>{
+		let arr=[]
+		function getchildren(parent){
+			let arr1=[]
+			parent.forEach(element=>{
+				arr1.push({
+					value:element,
+					text:element
+				})
+		})
+			return arr1}
+		res.data.forEach(item=>{
+			arr.push({
+				text:item.学院,
+				value:item.学院+1,
+				children:getchildren(item.children)
+			})
+		})
+		options.value[0].children=arr
+	})
+	getBuildingsAndClassrooms().then(res=>{
+		options.value[1].children=res.data
+	})
+	getDepartmentsAndClasses().then(res=>{
+		options.value[2].children=res.data
+	})
+}
 </script>
 
 <style scoped>
 /* 基础容器样式 */
+/* 深度穿透样式 */
+.single-line-picker ::v-deep .uni-data-picker-input-text {
+  display: inline-block;
+  max-width: 100%; /* 重要：限制最大宽度 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle; /* 保持垂直居中 */
+}
+
+/* 调整输入框容器 */
+.single-line-picker ::v-deep .uni-data-picker-input {
+  display: flex;
+  align-items: center;
+  height: 36px; /* 固定高度防止换行 */
+}
+
+/* 清除可能影响布局的边距 */
+.single-line-picker ::v-deep .uni-data-picker-selected {
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+/* 调整下拉图标位置 */
+.single-line-picker ::v-deep .uni-data-picker-input-arrow {
+  margin-left: auto; /* 将箭头推到最右侧 */
+  flex-shrink: 0; /* 防止箭头被挤压 */
+}
+.container {
+  padding: 20px;
+}
 .course-schedule-container {
   width: 100%;
   padding: 16rpx;

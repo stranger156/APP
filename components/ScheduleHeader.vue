@@ -1,33 +1,37 @@
 <template>
   <view class="schedule-header">
-    <text class="date">{{ date }}</text>
-    <text class="week">{{ week }}</text>
+    <text class="week-number">{{ weekNumber }}</text>
+    <text class="date-range">{{ dateRange }}</text>
   </view>
 </template>
 
 <script setup>
 defineProps({
-  date: String,
-  week: String
+  weekNumber: String,
+  dateRange: String
 });
 </script>
 
 <style scoped>
 .schedule-header {
-  display: flex;
-  flex-direction: column;
+  padding: 20rpx;
+  background-color: #4a90e2;
+  border-radius: 12rpx;
   margin-bottom: 20rpx;
+  text-align: center;
 }
 
-.date {
+.week-number {
   font-size: 36rpx;
   font-weight: bold;
-  color: #333;
+  color: white;
+  display: block;
 }
 
-.week {
+.date-range {
   font-size: 28rpx;
-  color: #666;
+  color: rgba(255, 255, 255, 0.8);
+  display: block;
   margin-top: 10rpx;
 }
 </style>

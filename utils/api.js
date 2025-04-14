@@ -1,6 +1,24 @@
 import {getTokenFromLocalStorage}from "../store/user.js"
 import  request from "./request";
+import { getScheduleByWeek, getWeekList } from './scheduleData';
 
+// 模拟API获取周次列表
+export const fetchWeekList = () => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(getWeekList());
+    }, 300);
+  });
+};
+
+// 模拟API获取指定周课程
+export const fetchScheduleByWeek = (weekKey) => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(getScheduleByWeek(weekKey));
+    }, 500);
+  });
+};
 // 登录接口
 export const login = (params) => {
     return request({
@@ -147,12 +165,98 @@ export const revisePassword= async (params) => {
 	}
 };
 
-// export  getUser =()=>
-//     $http(
-//         {
-//             url:"/user/userinfo",
-//             method:"get",
-//             headers:{
-//                 "Authorization":localStorage.getItem('token')
-//             }
-//         })
+//获取学院教师列表
+export const getTeachersByCollege = async () => {
+    try {
+        const token = await getTokenFromLocalStorage();  
+
+        if (!token) {
+            uni.showToast({
+                title: '请先登录',
+                icon: 'none'
+            });
+            return Promise.reject(new Error('Token 不存在'));
+        }
+
+        // 使用获取的 token 发送请求
+        return request({
+            url: "/getTeachersByCollege",
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+    } catch (err) {
+        console.error('获取 Token 失败:', err);
+        uni.showToast({
+            title: '获取 Token 失败',
+            icon: 'none'
+        });
+        return Promise.reject(err);
+    }
+};
+
+//获取学院教室列表
+export const getBuildingsAndClassrooms = async () => {
+    try {
+        const token = await getTokenFromLocalStorage();  
+
+        if (!token) {
+            uni.showToast({
+                title: '请先登录',
+                icon: 'none'
+            });
+            return Promise.reject(new Error('Token 不存在'));
+        }
+
+        // 使用获取的 token 发送请求
+        return request({
+            url: "/getBuildingsAndClassrooms",
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+    } catch (err) {
+        console.error('获取 Token 失败:', err);
+        uni.showToast({
+            title: '获取 Token 失败',
+            icon: 'none'
+        });
+        return Promise.reject(err);
+    }
+};
+
+//获取院系班级
+export const getDepartmentsAndClasses = async () => {
+    try {
+        const token = await getTokenFromLocalStorage();  
+
+        if (!token) {
+            uni.showToast({
+                title: '请先登录',
+                icon: 'none'
+            });
+            return Promise.reject(new Error('Token 不存在'));
+        }
+
+        // 使用获取的 token 发送请求
+        return request({
+            url: "/getDepartmentsAndClasses",
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+    } catch (err) {
+        console.error('获取 Token 失败:', err);
+        uni.showToast({
+            title: '获取 Token 失败',
+            icon: 'none'
+        });
+        return Promise.reject(err);
+    }
+};
