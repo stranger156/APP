@@ -31,7 +31,7 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "	智课魔方"
+				"navigationBarTitleText": "	"
 			}
 		},{
 			"path": "pages/management/management",

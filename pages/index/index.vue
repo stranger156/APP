@@ -7,18 +7,14 @@
 
     <!-- 功能按钮 -->
     <view class="action-bar">
-      <button class="btn" @click="showAddDialog = true">添加课程</button>
+      <button class="btn" @click="openAddDialog">添加课程</button>
       <button class="btn" @click="autoSchedule">智能排课</button>
     </view>
 
     <!-- 课程表视图 -->
     <view class="timetable">
-      <view class="time-axis">
-        <view class="time-slot" v-for="time in timeSlots" :key="time">
-          {{ time }}
-        </view>
-      </view>
-      <view class="day-column" v-for="day in weekDays" :key="day">
+ 
+      <view class="day-column" v-for="day in weekDays" :key="day" style="min-height: 200px;">
         <text class="day-title">{{ day }}</text>
         <view 
           class="course-slot"
@@ -28,7 +24,9 @@
           @click="showDetail(course)"
         >
           <text class="course-name">{{ course.name }}</text>
-          <text class="course-info">{{ course.teacher }} @{{ course.room }}</text>
+		  <br />
+          <text class="course-info">{{ course.teacher }} </text>
+		     <text class="course-info">{{ course.room }}</text>
         </view>
       </view>
     </view>
@@ -50,6 +48,13 @@
           @change="(e) => newCourse.room = rooms[e.detail.value]"
         >
           <view>教室：{{ newCourse.room || '请选择' }}</view>
+        </picker>
+        <picker
+          mode="selector"
+          :range="weekDays"
+          @change="(e) => newCourse.day = weekDays[e.detail.value]"
+        >
+          <view>星期：{{ newCourse.day || '请选择' }}</view>
         </picker>
         <view class="time-picker">
           <text>时间：</text>
@@ -84,14 +89,12 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
-import { onLoad } from '@dcloudio/uni-app'
+import { ref, reactive } from 'vue'
 
 // 基础数据
-const weekDays = ref(['周一', '周二', '周三', '周四', '周五'])
-const timeSlots = ref(['08:00', '09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00'])
-const teachers = ref(['张老师', '王老师', '李老师', '赵老师'])
-const rooms = ref(['101教室', '102教室', '201实验室', '301机房'])
+const weekDays = ['周一', '周二', '周三', '周四', '周五','周六','周日']
+const teachers = ['张老师', '王老师', '李老师', '赵老师']
+const rooms = ['101教室', '102教室', '201实验室', '301机房']
 
 // 课程数据
 const courses = ref([])
@@ -104,13 +107,18 @@ const newCourse = reactive({
   day: '周一'
 })
 
-// 弹窗控制
-const showAddDialog = ref(false)
+// 弹窗引用
+const addDialog = ref(null)
+const detailDialog = ref(null)
 const selectedCourse = ref(null)
+
+// 打开添加课程弹窗
+const openAddDialog = () => {
+  addDialog.value?.open()
+}
 
 // 自动排课逻辑
 const autoSchedule = () => {
-  // TODO: 实现智能排课算法
   uni.showToast({ title: '自动排课功能开发中', icon: 'none' })
 }
 
@@ -126,7 +134,7 @@ const addCourse = () => {
 
   courses.value.push({ ...newCourse, id: Date.now() })
   resetForm()
-  showAddDialog.value = false
+  addDialog.value?.close()
 }
 
 // 课程冲突检测
@@ -185,12 +193,12 @@ const getDayCourses = (day) => {
 
 const showDetail = (course) => {
   selectedCourse.value = course
-  uni.$refs.detailDialog.open()
+  detailDialog.value?.open()
 }
 
 const removeCourse = (id) => {
   courses.value = courses.value.filter(c => c.id !== id)
-  uni.$refs.detailDialog.close()
+  detailDialog.value?.close()
 }
 
 const resetForm = () => {
@@ -213,6 +221,7 @@ const resetForm = () => {
 .header {
   padding: 30rpx;
   background: #007AFF;
+  text-align: center;
 }
 
 .title {
@@ -221,48 +230,114 @@ const resetForm = () => {
   font-weight: bold;
 }
 
+.action-bar {
+  display: flex;
+  justify-content: space-around;
+  margin: 20rpx 0;
+}
+
+.btn {
+  background: #007AFF;
+  color: white;
+  border-radius: 10rpx;
+}
+
 .timetable {
   display: flex;
-  margin-top: 40rpx;
+  margin-top: 20rpx;
+  border: 1rpx solid #eee;
 }
 
 .time-axis {
-  width: 150rpx;
+  width: 120rpx;
+  background: #f5f5f5;
+}
+
+.time-slot {
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1rpx solid #eee;
+  font-size: 24rpx;
 }
 
 .day-column {
   flex: 1;
-  border-left: 2rpx solid #eee;
-  padding: 0 10rpx;
+  border-left: 1rpx solid #eee;
+  padding: 0 5rpx;
+}
+
+.day-title {
+  display: block;
+  text-align: center;
+  padding: 10rpx 0;
+  font-weight: bold;
+  border-bottom: 1rpx solid #eee;
 }
 
 .course-slot {
-  background: #f0f9ff;
-  border: 1rpx solid #007AFF;
-  border-radius: 8rpx;
-  padding: 10rpx;
+  background: #e6f7ff;
+  border: 1rpx solid #91d5ff;
+  border-radius: 6rpx;
+  padding: 5rpx;
   margin-bottom: 5rpx;
+  overflow: hidden;
 }
 
 .course-name {
   font-weight: bold;
-  display: block;
+  font-size: 26rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .course-info {
-  font-size: 24rpx;
+  font-size: 22rpx;
   color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.add-form, .course-detail {
+  padding: 30rpx;
+  background: white;
+  border-radius: 10rpx;
+}
+
+.add-form input, .add-form picker {
+  margin-bottom: 20rpx;
+  padding: 15rpx;
+  border: 1rpx solid #eee;
+  border-radius: 8rpx;
 }
 
 .time-picker {
   display: flex;
   align-items: center;
-  gap: 20rpx;
+  margin-bottom: 20rpx;
 }
 
-.btn {
-  margin: 20rpx;
-  background: #007AFF;
-  color: white;
+.time-picker > text {
+  margin-right: 10rpx;
+}
+
+.time-picker picker {
+  flex: 1;
+  margin-right: 10rpx;
+}
+
+.detail-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.course-detail > text {
+  display: block;
+  margin-bottom: 15rpx;
 }
 </style>
