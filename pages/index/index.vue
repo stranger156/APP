@@ -14,13 +14,14 @@
     <!-- 课程表视图 -->
     <view class="timetable">
  
-      <view class="day-column" v-for="day in weekDays" :key="day" style="min-height: 200px;">
+      <view class="day-column" v-for="day in weekDays" :key="day" style="min-height: 360px;">
         <text class="day-title">{{ day }}</text>
         <view 
           class="course-slot"
           v-for="course in getDayCourses(day)"
           :key="course.id"
-          :style="{ height: calcHeight(course) }"
+          :style="{ height: calcHeight(course),
+		            top: calcTop(course) }"
           @click="showDetail(course)"
         >
           <text class="course-name">{{ course.name }}</text>
@@ -49,6 +50,25 @@
         >
           <view>教室：{{ newCourse.room || '请选择' }}</view>
         </picker>
+		<picker
+		  mode="selector"
+		  :range="faculties"
+		  @change="(e) => {
+		  newCourse.class = '';  // 清空班级选择
+		  newCourse.faculty = faculties[e.detail.value];
+		  fetchClassesByFaculty(faculties[e.detail.value]);  // 获取选中的学院的班级信息
+		}"
+		>
+		  <view>学院：{{ newCourse.faculty || '请选择学院' }}</view>
+		</picker>
+		
+		<picker
+		  mode="selector"
+		  :range="classes"
+		  @change="(e) => newCourse.class = classes[e.detail.value]"
+		>
+		  <view>班级：{{ newCourse.class || '请选择班级' }}</view>
+		</picker>
         <picker
           mode="selector"
           :range="weekDays"
@@ -57,24 +77,28 @@
           <view>星期：{{ newCourse.day || '请选择' }}</view>
         </picker>
         <view class="time-picker">
-          <text>时间：</text>
+          <text>节次：</text>
           <picker 
-            mode="time" 
-            @change="(e) => newCourse.startTime = e.detail.value"
+            mode="selector" 
+			:range="sections"
+            @change="(e) => {
+                  newCourse.startTime = sections[e.detail.value]
+                  newCourse.endTime = ''
+                }"
           >
-            <view>{{ newCourse.startTime || '开始时间' }}</view>
+            <view>{{ newCourse.startTime || '开始节次' }}</view>
           </picker>
           <picker 
-            mode="time" 
-            @change="(e) => newCourse.endTime = e.detail.value"
+            mode="selector" 
+			:range="getEndSections()"
+            @change="(e) => newCourse.endTime = getEndSections()[e.detail.value]"
           >
-            <view>{{ newCourse.endTime || '结束时间' }}</view>
+            <view>{{ newCourse.endTime || '结束节次' }}</view>
           </picker>
         </view>
         <button @click="addCourse">确认添加</button>
       </view>
     </uni-popup>
-
     <!-- 课程详情弹窗 -->
     <uni-popup ref="detailDialog" type="dialog">
       <view v-if="selectedCourse" class="course-detail">
@@ -89,12 +113,17 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive,onMounted } from 'vue'
+import { getClassesByFaculty, getClassroom, getFaculties, getTeacher } from '../../utils/api'
 
 // 基础数据
 const weekDays = ['周一', '周二', '周三', '周四', '周五','周六','周日']
-const teachers = ['张老师', '王老师', '李老师', '赵老师']
-const rooms = ['101教室', '102教室', '201实验室', '301机房']
+const teachers = ref(['张老师', '王老师', '李老师', '赵老师'])
+const rooms = ref(['101教室', '102教室', '201实验室', '301机房'])
+const faculties = ref([])
+const classes = ref([''])
+const sections = ["1", "2", "3", '4', '5', '6', '7', '8', '9', '10', '11', '12']
+const selectedFaculty = ref([])
 
 // 课程数据
 const courses = ref([])
@@ -102,6 +131,8 @@ const newCourse = reactive({
   name: '',
   teacher: '',
   room: '',
+  faculty: '',
+  class: '',
   startTime: '',
   endTime: '',
   day: '周一'
@@ -112,6 +143,83 @@ const addDialog = ref(null)
 const detailDialog = ref(null)
 const selectedCourse = ref(null)
 
+const fetchFaculties = () => {
+  getFaculties().then(res => {
+    if (res.code === 200) {
+      faculties.value = res.faculties; 
+    } else {
+      uni.showToast({
+        title: '获取学院数据失败',
+        icon: 'none'
+      });
+    }
+  }).catch(err => {
+    console.error("请求失败:", err);
+    uni.showToast({
+      title: '请求失败，请稍后重试',
+      icon: 'none'
+    });
+  });
+};
+
+const fetchClassesByFaculty = (college) => {
+  getClassesByFaculty({faculty: college}).then(res => {
+    if (res.code === 200) {
+      classes.value = res.classes;
+    } else {
+      uni.showToast({
+        title: '获取班级数据失败',
+        icon: 'none'
+      });
+    }
+  }).catch(err => {
+    console.error("请求失败:", err);
+    uni.showToast({
+      title: '请求失败，请稍后重试',
+      icon: 'none'
+    });
+  });
+};
+
+const fetchClassroom = () => {
+    getClassroom().then(res => {
+        if (res.code === 200) {
+			console.log(res);
+            rooms.value = res.classrooms
+        } else {
+            uni.showToast({
+                title: '获取数据失败',
+                icon: 'none'
+            });
+        }
+    }).catch(err => {
+        console.error("请求失败:", err);
+        uni.showToast({
+            title: '请求失败，请稍后重试',
+            icon: 'none'
+        });
+    });
+};
+
+const fetchTeacher = () => {
+    getTeacher().then(res => {
+        if (res.code === 200) {
+			console.log(res);
+            teachers.value = res.teachers 
+        } else {
+            uni.showToast({
+                title: '获取数据失败',
+                icon: 'none'
+            });
+        }
+    }).catch(err => {
+        console.error("请求失败:", err);
+        uni.showToast({
+            title: '请求失败，请稍后重试',
+            icon: 'none'
+        });
+    });
+};
 // 打开添加课程弹窗
 const openAddDialog = () => {
   addDialog.value?.open()
@@ -151,24 +259,23 @@ const checkConflict = (course) => {
   )
 }
 
-// 时间重叠检测
-const timeOverlap = (start1, end1, start2, end2) => {
-  const s1 = timeToMinutes(start1)
-  const e1 = timeToMinutes(end1)
-  const s2 = timeToMinutes(start2)
-  const e2 = timeToMinutes(end2)
-  return (s1 < e2) && (s2 < e1)
+const getEndSections = () => {
+  const start = parseInt(newCourse.startTime)
+  if (!start || isNaN(start)) return sections
+  return sections.slice(start - 1) // 从 start 开始到12节
 }
 
-// 工具函数
-const timeToMinutes = (time) => {
-  const [h, m] = time.split(':').map(Number)
-  return h * 60 + m
+const timeOverlap = (start1, end1, start2, end2) => {
+  return (parseInt(start1) <= parseInt(end2)) && (parseInt(start2) <= parseInt(end1))
 }
 
 const calcHeight = (course) => {
-  const duration = timeToMinutes(course.endTime) - timeToMinutes(course.startTime)
-  return `${duration / 5}px` // 每5分钟对应1px
+  const duration = parseInt(course.endTime) - parseInt(course.startTime)
+  return `${(duration +1) * 40}px`
+}
+
+const calcTop = (course) => {
+  return `${(parseInt(course.startTime) - 1) * 40 + 35}px`
 }
 
 const validateCourse = (course) => {
@@ -182,6 +289,10 @@ const validateCourse = (course) => {
   }
   if (!course.startTime || !course.endTime) {
     uni.showToast({ title: '请选择时间', icon: 'none' })
+    return false
+  }
+  if (!course.faculty || !course.class) {
+    uni.showToast({ title: '请选择班级', icon: 'none' })
     return false
   }
   return true
@@ -206,11 +317,18 @@ const resetForm = () => {
     name: '',
     teacher: '',
     room: '',
+	faculty: '',
+	class: '',
     startTime: '',
     endTime: '',
     day: '周一'
   })
 }
+onMounted(() => {
+    fetchClassroom();
+	fetchTeacher();
+	fetchFaculties()
+});
 </script>
 
 <style scoped>
@@ -266,6 +384,8 @@ const resetForm = () => {
   flex: 1;
   border-left: 1rpx solid #eee;
   padding: 0 5rpx;
+  min-height: 360px;
+  position: relative;
 }
 
 .day-title {
@@ -283,6 +403,8 @@ const resetForm = () => {
   padding: 5rpx;
   margin-bottom: 5rpx;
   overflow: hidden;
+  width: 90%;
+  position: absolute;
 }
 
 .course-name {
