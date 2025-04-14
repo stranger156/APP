@@ -25,7 +25,15 @@ const request = (options) => {
                             icon: 'none'
                         });
                     }
-                    reject(new Error(`请求失败，状态码: ${res.statusCode}`));
+					if (res.statusCode === 400) {
+					    // 从响应数据中获取错误信息
+					    const errorMessage = res.data.message;
+					    uni.showToast({
+					        title: errorMessage,
+					        icon: 'none'
+					    });
+					}
+                    // reject(new Error(`请求失败,状态码: ${res.statusCode}`));
                 }
             },
             fail: (err) => {
