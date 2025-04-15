@@ -31,7 +31,6 @@ let loading = ref(true);
 const fetchClasses = () => {
     getFaculties().then(res => {
         if (res.code === 200) {
-			console.log(res);
             List1.value = res.faculties;  // 将获取到的学院列表赋值给 List1
             loading.value = false; // 停止加载动画
         } else {

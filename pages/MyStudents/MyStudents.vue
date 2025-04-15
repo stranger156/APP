@@ -53,7 +53,6 @@ const fetchClasses = () => {
   // 使用获取到的参数调用 API
   getClassesByFaculty({ faculty: form.value.faculty }).then(res => {
     if (res.code === 200) {
-      console.log(res);
       List2.value = res.classes;  // 将获取到的班级列表赋值给 List2
       loading.value = false; // 停止加载动画
     } else {
