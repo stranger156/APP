@@ -70,7 +70,7 @@
 			"path" : "pages/UserFeedback/UserFeedback",
 			"style" : 
 			{
-				"navigationBarTitleText" : ""
+				"navigationBarTitleText" : "意见反馈"
 			}
 		},
 		{

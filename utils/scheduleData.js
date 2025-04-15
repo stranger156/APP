@@ -20,7 +20,7 @@ export const weeklySchedule = {
         name: "大学英语",
         location: "西201",
         teacher: "王老师",
-        day: "周一", // 同一天第二节课
+        day: "周二", // 同一天第二节课
         startTime: "10:00",
         endTime: "11:40"
       },
