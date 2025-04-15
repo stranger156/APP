@@ -322,3 +322,69 @@ export const getTeacher= async () => {
 	    return Promise.reject(err);
 	}
 };
+
+//开始排课 
+export const scheduleClasses = async (params) => {
+	try {
+	    // 使用 await 等待 getTokenFromLocalStorage 获取 token
+	    const token = await getTokenFromLocalStorage();  
+	
+	    if (!token) {
+	        uni.showToast({
+	            title: '请先登录',
+	            icon: 'none'
+	        });
+	        return Promise.reject(new Error('Token 不存在'));
+	    }
+	
+	    // 使用获取的 token 发送请求
+	    return request({
+	        url: "/scheduleClasses",
+	        method: 'POST',
+	    	headers:{  'Content-Type': 'application/x-www-form-urlencoded',
+	    	              'Authorization': `Bearer ${token}`
+	    	            },
+			data:params
+	    });
+	} catch (err) {
+	    console.error('获取 Token 失败:', err);
+	    uni.showToast({
+	        title: '获取 Token 失败',
+	        icon: 'none'
+	    });
+	    return Promise.reject(err);
+	}
+};
+
+//保存排课任务
+export const getCourseTask = async (params) => {
+	try {
+	    // 使用 await 等待 getTokenFromLocalStorage 获取 token
+	    const token = await getTokenFromLocalStorage();  
+	
+	    if (!token) {
+	        uni.showToast({
+	            title: '请先登录',
+	            icon: 'none'
+	        });
+	        return Promise.reject(new Error('Token 不存在'));
+	    }
+	
+	    // 使用获取的 token 发送请求
+	    return request({
+	        url: "/scheduleClasses",
+	        method: 'POST',
+	    	headers:{  'Content-Type': 'application/x-www-form-urlencoded',
+	    	              'Authorization': `Bearer ${token}`
+	    	            },
+			data:params
+	    });
+	} catch (err) {
+	    console.error('获取 Token 失败:', err);
+	    uni.showToast({
+	        title: '获取 Token 失败',
+	        icon: 'none'
+	    });
+	    return Promise.reject(err);
+	}
+};

@@ -208,7 +208,7 @@
 
 <script setup>
 import { ref, reactive,onMounted,computed } from 'vue'
-import { getClassesByFaculty, getClassroom, getFaculties, getTeacher } from '../../utils/api'
+import { getClassesByFaculty, getClassroom, getCourseTask, getFaculties, getTeacher, scheduleClasses } from '../../utils/api'
 
 // 基础数据
 const weekDays = ['周一', '周二', '周三', '周四', '周五','周六','周日']
@@ -234,7 +234,6 @@ const newCourse = reactive({
   class: '',
   startTime: '',
   endTime: '',
-  day: '周一',
   weeks: [],
   totalWeeks: '',
   days: [],
@@ -330,6 +329,48 @@ const fetchTeacher = () => {
     });
 };
 
+const fetchSchedule = (Options) => {
+    scheduleClasses({"options":Options}).then(res => {
+		uni.hideLoading();
+        if (res.code === 200) {
+			console.log(res);
+        } else {
+            uni.showToast({
+                title: '获取数据失败',
+                icon: 'none'
+            });
+        }
+    }).catch(err => {
+        console.error("请求失败:", err);
+		uni.hideLoading();
+        uni.showToast({
+            title: '请求失败，请稍后重试',
+            icon: 'none'
+        });
+    });
+};
+
+const fetchSave = (courses) => {
+    getCourseTask({"courses":courses}).then(res => {
+		uni.hideLoading();
+        if (res.code === 200) {
+			console.log(res);
+        } else {
+            uni.showToast({
+                title: '获取数据失败',
+                icon: 'none'
+            });
+        }
+    }).catch(err => {
+        console.error("请求失败:", err);
+		uni.hideLoading();
+        uni.showToast({
+            title: '请求失败，请稍后重试',
+            icon: 'none'
+        });
+    });
+};
+
 const checkFacultyBeforeClass = () => {
   if (!newCourse.faculty) {
     uni.showToast({
@@ -401,17 +442,20 @@ const openAutoScheduleDialog = () => {
 
 // 智能排课逻辑
 const autoSchedule = () => {
-	if (courses.value.length === 0) {
-	    uni.showToast({
-	      title: '当前没有课程，无法执行排课',
-	      icon: 'none'
-	    });
-	    return; // 拒绝继续执行
-	  }
-  const selected = Object.keys(selectedOptions).filter(option => selectedOptions[option]);
-  uni.showToast({ title: `开始排课，已选择：${selected.join(', ')}`, icon: 'none' });
-  console.log(courses);
-  autoScheduleDialog.value?.close();  // 关闭弹窗
+	// if (courses.value.length === 0) {
+	//     uni.showToast({
+	//       title: '当前没有课程，无法执行排课',
+	//       icon: 'none'
+	//     });
+	//     return; // 拒绝继续执行
+	//   }
+	uni.showLoading({
+	    title: '正在智能排课...'
+	});
+	const selected = Object.keys(selectedOptions).filter(option => selectedOptions[option]);
+	fetchSave(courses.value)
+	scheduleClasses(selectedOptions)
+	autoScheduleDialog.value?.close();  // 关闭弹窗
 }
 
 // 添加课程验证
